@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forwarding-proxy
+  labels:
+    app: forwarding-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forwarding-proxy
+  template:
+    metadata:
+      labels:
+        app: forwarding-proxy
+    spec:
+      containers:
+      - name: forwarding-proxy
+        image: cubeearth/forwarding-proxy:latest
+        ports:
+        - containerPort: 3128        
+---   
+apiVersion: v1
+kind: Service
+metadata:
+  name: forwarding-proxy
+spec:
+  selector:
+    app: forwarding-proxy
+  ports:
+  - name: squid1
+    port: 3128
